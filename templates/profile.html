@@ -17,6 +17,10 @@
   
   <body>
 	<p> Profile page - Customization </p>
+	<p class="title"> Login Successful! Hello {{ session['username'] }}.</p>
+	<button class="button2" style="width: 40%; margin-top: 50%; margin-left: 30%"><a class="link2" href="{{ url_for('changeEmail') }}">Change Email</a></button>
+	<button class="button2" style="width: 40%; margin-top: 2%; margin-left: 30%"><a class="link2" href="{{ url_for('deleteAccount') }}">Delete Account</a></button>
+	<button class="button2" style="width: 40%; margin-top: 2%; margin-left: 30%"><a class="link2" href="{{ url_for('logout') }}">Log out</a></button>
   </body>
   
 </html>

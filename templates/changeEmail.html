@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Placeholder Title</title>
+	
+	<!-- External CSS Page -->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='myCSS.css')}}">
+
+	<!-- Embedded CSS, overwrites external CSS -->
+    <style type="text/css">
+    </style>
+
+  </head>
+  
+  <body>
+	<div class="container">
+		<div class="row">
+			<div class="col col-offset">
+				<form method=POST action="{{ url_for('changeEmail') }}">
+					<div class="form-group">
+						<label for="newEmailAddress"><span class="content">New Email:</span></label>
+						<input type="text" class="form-control" name="newEmail" placeholder="newemail@gmail.com">
+					</div>
+					<button type="submit" class="button2">Change Email</button>
+					<div>
+					<!-- Flashing message, if message exists and loop -->
+					{% with messages = get_flashed_messages() %}
+						{% if messages %}
+							{% for message in messages %}
+								<h3 class="content"> {{ message }} </h3>
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
+					<p class="content">Click <a class="link" href="{{ url_for('profile') }}">here</a> to return to profile. </p>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+  </body>
+  
+</html>
