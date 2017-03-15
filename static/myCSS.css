@@ -103,3 +103,8 @@
 	text-align:center;
 	word-spacing:2pt;
 }
+
+.background-canvas {
+	background-color: black;
+	position:absolute;
+}
