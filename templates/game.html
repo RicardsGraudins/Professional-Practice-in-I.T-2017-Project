@@ -25,8 +25,14 @@
   <body>
 	
 	<canvas id="background-canvas" class="background-canvas" width="1920" height="1080"></canvas>
+	<canvas id="player-canvas" class="player-canvas" width="1920" height="1080"></canvas>
 	<script type="text/javascript" src="{{ url_for('static', filename='resources/background.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='resources/player.js') }}"></script>
 	
+	<!-- comment out <script type="text/javascript" src="{{ url_for('static', filename='resources/player.js') }}"></script> to use jQuery for player movement instead
+	<script type="text/javascript" src="{{ url_for('static', filename='resources/jquery-3.2.0.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='resources/playerjQuery.js') }}"></script>
+	-->
   </body>
   
 </html>

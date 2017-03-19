@@ -108,3 +108,8 @@
 	background-color: black;
 	position:absolute;
 }
+
+.player-canvas {
+	position: absolute;
+	/* transparent by default */
+}
