@@ -24,7 +24,7 @@ function player (x,y,width,height,speed){
 		if (KEY_STATUS.left || KEY_STATUS.right ||
 			KEY_STATUS.down || KEY_STATUS.up) {
 				
-			context.clearRect(0, 0, canvas.width, canvas.height);
+			//context.clearRect(0, 0, canvas.width, canvas.height);
 			
 			if (KEY_STATUS.left) {
 				this.x -= this.speed
@@ -58,7 +58,21 @@ function player (x,y,width,height,speed){
 playerObject = new player(900,900,20,20,10);
 
 function init(){
+	context.clearRect(0, 0, canvas.width, canvas.height);
 	playerObject.move();
+
+	for (var i =0; i < 16; i++){
+		enemiesMid[i].move();
+	}//for
+	
+	for (i = 0; i < 8; i++){
+		enemiesLeft[i].move();
+	}//for
+	
+	for (i = 0; i < 8; i++){
+		enemiesRight[i].move();
+	}//for
+	
 	window.requestAnimationFrame(init);
 }//init
 
@@ -103,5 +117,140 @@ document.onkeyup = function(e) {
 	KEY_STATUS[KEY_CODES[keyCode]] = false;
   }//if
 }//onkeyup
+
+//----------------------------
+//abstract function
+function enemy(){
+	this.spawn = function(){}
+	this.move = function(){}
+	this.shoot = function(){console.log("shoot")}
+}//enemy
+
+function mid(x, y, dx, dy, width, height, left, right){
+	this.x = x;
+	this.y = y;
+	this.dx = dx;
+	this.dy = dy;
+	this.width = width;
+	this.height = height;
+	this.left = left;
+	this.right = right;
+	
+	this.spawn = function(){
+		context.beginPath();
+		context.rect(this.x,this.y,this.width,this.height);
+		context.fillStyle = "yellow";
+		context.fill();
+		context.closePath();
+	}//spawn
+	
+	this.move = function() {
+		this.spawn();
+		
+		//move along y axis until at 100 y
+		if (this.y != 100){
+			this.y += this.dy;
+		}//if
+		
+		//if y == 100 then start moving right until right boundary is reached, change dx to go left until left boundary is reached then reverse dx and so on
+		if (this.y == 100){
+			this.x += this.dx;
+			if(this.x + this.dx > canvas.width - this.right || this.x + this.dx < 0 + this.left) {
+				this.dx = -this.dx;
+			}//inner if
+		}//if
+	}//move
+}//mid
+
+function left(x, y, dx, dy, width, height){
+	this.x = x;
+	this.y = y;
+	this.dx = dx;
+	this.dy = dy;
+	this.width = width;
+	this.height = height;
+	
+	this.spawn = function(){
+		context.beginPath();
+		context.rect(this.x,this.y,this.width,this.height);
+		context.fillStyle = "red";
+		context.fill();
+		context.closePath();
+	}//spawn
+	
+	this.move = function() {
+		this.spawn();
+		
+		this.x += this.dx;
+		if(this.x + this.dx > canvas.width) {
+			this.x = -20;
+		}//inner if
+	}//move
+}//left
+
+function right(x, y, dx, dy, width, height){
+	this.x = x;
+	this.y = y;
+	this.dx = dx;
+	this.dy = dy;
+	this.width = width;
+	this.height = height;
+	
+	this.spawn = function(){
+		context.beginPath();
+		context.rect(this.x,this.y,this.width,this.height);
+		context.fillStyle = "blue";
+		context.fill();
+		context.closePath();
+	}//spawn
+	
+	this.move = function() {
+		this.spawn();
+		
+		this.x -= this.dx;
+		if(this.x + this.dx < 0) {
+			this.x = canvas.width + 20;
+		}//inner if
+	}//move
+}//right
+
+mid.prototype = new enemy();
+left.prototype = new enemy();
+right.prototype = new enemy();
+
+//mid
+var enemiesMid = {};
+var howManyMid = 8;
+var xMid = 800;
+var leftMid = 100;
+var rightMid = 500;
+var q = 8;
+
+for (var e = 0; e < howManyMid; e++){
+	enemiesMid[e] = new mid(xMid, -50, 2, 2, 20, 20, leftMid, rightMid);
+	enemiesMid[q] = new mid(xMid, 0, 2, 2, 20, 20, leftMid, rightMid);
+	xMid = xMid + 50;
+	leftMid = leftMid + 50;
+	rightMid = rightMid - 50;
+	q++;
+}//for
+
+//left
+enemiesLeft = {};
+xLeft = -400;
+
+for (var el = 0; el < 8; el++){
+enemiesLeft[el] = new left(xLeft, 250, 2, 2, 20, 20);
+xLeft = xLeft + 50;
+}
+
+//right
+enemiesRight = {}
+xRight = canvas.width + 400;
+
+for (var er = 0; er < 8; er++){
+enemiesRight[er] = new right(xRight, 350, 2, 2, 20, 20);
+xRight = xRight - 50;
+}
 
 init();
