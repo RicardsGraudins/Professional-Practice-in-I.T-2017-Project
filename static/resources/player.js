@@ -3,12 +3,17 @@ var canvas = document.getElementById("player-canvas");
 //gets a 2D context for the canvas
 var context = canvas.getContext("2d");
 
+var shotFired = true;
+
 function player (x,y,width,height,speed){
 	this.x =x;
 	this.y =y;
 	this.width = width;
 	this.height = height;
 	this.speed = speed;
+	
+	//+10 to (x,y) because the center of a rectangle is the upper left corner
+	playerBullet = new bullet(this.x + 10,this.y, 10);
 	
 	this.draw = function(){
 		context.beginPath();
@@ -52,8 +57,37 @@ function player (x,y,width,height,speed){
 			}
 		}//if
 		playerObject.draw();
+		//if space bar is pressed, set shotFired to true (triggers playerBullet.move inside init function) and if the bullet is off the canvas set it to player's location
+		if (KEY_STATUS.space){
+			shotFired = true;
+			if (playerBullet.y < 0){
+				playerBullet.x = this.x + 10;
+				playerBullet.y = this.y + 5;
+			}//inner if
+		}//if
 	}//move
 }//player
+
+//bullet object for player and enemies
+function bullet(x,y,r){
+	this.x = x;
+	this.y = y;
+	this.r = r;
+	
+	this.draw = function(){
+		context.beginPath();
+		context.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+		context.fillStyle = "Cyan";
+		context.fill();
+		context.closePath();
+	}//draw
+	
+	//move upwards 15 pixels
+	this.move = function(){
+		this.draw();
+		this.y += -15;
+	}//move
+}//bullet
 
 playerObject = new player(900,900,20,20,10);
 
@@ -61,17 +95,31 @@ function init(){
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	playerObject.move();
 
+	//only move and checkCollision if the object has not been hit by the player's bullet
 	for (var i =0; i < 16; i++){
-		enemiesMid[i].move();
+		if (enemiesMid[i].hit == 0){
+			enemiesMid[i].move();
+			enemiesMid[i].checkCollision();
+		}//if
 	}//for
 	
 	for (i = 0; i < 8; i++){
-		enemiesLeft[i].move();
+		if (enemiesLeft[i].hit == 0){
+			enemiesLeft[i].move();
+			enemiesLeft[i].checkCollision();
+		}//if
 	}//for
 	
 	for (i = 0; i < 8; i++){
-		enemiesRight[i].move();
+		if(enemiesRight[i].hit == 0){
+			enemiesRight[i].move();
+			enemiesRight[i].checkCollision();
+		}//if
 	}//for
+	
+	if (shotFired == true){
+		playerBullet.move();
+	}//if
 	
 	window.requestAnimationFrame(init);
 }//init
@@ -79,6 +127,7 @@ function init(){
 //the keycodes that will be mapped when a user presses a button
 //original code by doug mcinnes https://github.com/dmcinnes/HTML5-Asteroids/blob/master/game.js
 KEY_CODES = {
+  32: 'space',
   37: 'left',
   38: 'up',
   39: 'right',
@@ -126,7 +175,8 @@ function enemy(){
 	this.shoot = function(){console.log("shoot")}
 }//enemy
 
-function mid(x, y, dx, dy, width, height, left, right){
+//enemies mid
+function mid(x, y, dx, dy, width, height, left, right, hit){
 	this.x = x;
 	this.y = y;
 	this.dx = dx;
@@ -135,6 +185,7 @@ function mid(x, y, dx, dy, width, height, left, right){
 	this.height = height;
 	this.left = left;
 	this.right = right;
+	this.hit = hit;
 	
 	this.spawn = function(){
 		context.beginPath();
@@ -160,15 +211,31 @@ function mid(x, y, dx, dy, width, height, left, right){
 			}//inner if
 		}//if
 	}//move
+	
+	this.checkCollision = function(){
+		//vertical and horizontal distance between the circle's center and the rectangle's center
+		var distX = Math.abs(playerBullet.x - this.x-this.width/2);
+		var distY = Math.abs(playerBullet.y - this.y-this.height/2); 
+		
+		//if the distance is less than half rectangle then they are colliding
+		if ((distX <= (this.width/2)) && (distY <= (this.height/2))){
+			//console.log("Collision Mid!")
+			this.hit = 1;
+			shotFired = false;
+			playerBullet.y = -500;
+		}//if
+	}//checkCollision
 }//mid
 
-function left(x, y, dx, dy, width, height){
+//enemies on the left will continuously move to the right until they are off the canvas and then spawn a bit off the canvas on the left and move right until destroyed
+function left(x, y, dx, dy, width, height, hit){
 	this.x = x;
 	this.y = y;
 	this.dx = dx;
 	this.dy = dy;
 	this.width = width;
 	this.height = height;
+	this.hit = hit;
 	
 	this.spawn = function(){
 		context.beginPath();
@@ -186,19 +253,32 @@ function left(x, y, dx, dy, width, height){
 			this.x = -20;
 		}//inner if
 	}//move
+	
+	this.checkCollision = function(){
+		var distX = Math.abs(playerBullet.x - this.x-this.width/2);
+		var distY = Math.abs(playerBullet.y - this.y-this.height/2); 
+		
+		if ((distX <= (this.width/2)) && (distY <= (this.height/2))){
+			//console.log("Collision Left!")
+			this.hit = 1;
+			shotFired = false;
+			playerBullet.y = -500;
+		}//if
+	}//checkCollision
 }//left
 
-function right(x, y, dx, dy, width, height){
+//enemies on the right will continuously move to the left until they are off the canvas and then spawn a bit off the canvas on the right and move left until destroyed
+function right(x, y, dx, dy, r, hit){
 	this.x = x;
 	this.y = y;
 	this.dx = dx;
 	this.dy = dy;
-	this.width = width;
-	this.height = height;
+	this.r = r;
+	this.hit = hit;
 	
 	this.spawn = function(){
 		context.beginPath();
-		context.rect(this.x,this.y,this.width,this.height);
+		context.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
 		context.fillStyle = "blue";
 		context.fill();
 		context.closePath();
@@ -212,13 +292,30 @@ function right(x, y, dx, dy, width, height){
 			this.x = canvas.width + 20;
 		}//inner if
 	}//move
+	
+	this.checkCollision = function(){
+		//horizontal and vertical distance between 2 balls
+		var colX = playerBullet.x - this.x;
+		var colY = playerBullet.y - this.y;
+		
+		//distance between 2 circle center points
+		var distance = Math.sqrt(Math.pow(colX,2) + Math.pow(colY,2));
+		
+		//if distance is less than the two radii added togather
+		if (distance <= playerBullet.r + this.r){
+			//console.log("Collision Right!");
+			this.hit = 1;
+			shotFired = false;
+			playerBullet.y = -500;
+		}//if
+	}//checkCollision
 }//right
 
 mid.prototype = new enemy();
 left.prototype = new enemy();
 right.prototype = new enemy();
 
-//mid
+//initializing enemies mid
 var enemiesMid = {};
 var howManyMid = 8;
 var xMid = 800;
@@ -227,29 +324,29 @@ var rightMid = 500;
 var q = 8;
 
 for (var e = 0; e < howManyMid; e++){
-	enemiesMid[e] = new mid(xMid, -50, 2, 2, 20, 20, leftMid, rightMid);
-	enemiesMid[q] = new mid(xMid, 0, 2, 2, 20, 20, leftMid, rightMid);
+	enemiesMid[e] = new mid(xMid, -50, 2, 2, 20, 20, leftMid, rightMid, 0);
+	enemiesMid[q] = new mid(xMid, 0, 2, 2, 20, 20, leftMid, rightMid, 0);
 	xMid = xMid + 50;
 	leftMid = leftMid + 50;
 	rightMid = rightMid - 50;
 	q++;
 }//for
 
-//left
+//initializing enemies on the left
 enemiesLeft = {};
 xLeft = -400;
 
 for (var el = 0; el < 8; el++){
-enemiesLeft[el] = new left(xLeft, 250, 2, 2, 20, 20);
+enemiesLeft[el] = new left(xLeft, 250, 2, 2, 20, 20, 0);
 xLeft = xLeft + 50;
 }
 
-//right
+//initializing enemies on the right
 enemiesRight = {}
 xRight = canvas.width + 400;
 
 for (var er = 0; er < 8; er++){
-enemiesRight[er] = new right(xRight, 350, 2, 2, 20, 20);
+enemiesRight[er] = new right(xRight, 350, 2, 20, 20, 0);
 xRight = xRight - 50;
 }
 
