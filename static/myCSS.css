@@ -104,6 +104,8 @@
 	word-spacing:2pt;
 }
 
+/* Game Template */
+
 .background-canvas {
 	background-color: black;
 	position:absolute;
@@ -112,4 +114,57 @@
 .player-canvas {
 	position: absolute;
 	/* transparent by default */
+}
+
+.fade {
+	opacity: 0.1;
+	position: absolute;
+}
+
+.reset {
+	opacity: 1;
+	position: absolute;
+}
+
+.game-over {
+	position: absolute;
+	top: 400px;
+	left: 900px;
+	font-weight:bold;
+	color:#FFFFFF;
+	font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
+	font-size: 30px;
+	cursor: default;
+	display: none;
+	text-shadow:1px 1px 1px rgba(46,39,26,1);
+}
+
+.menu {
+	position: absolute;
+	top: 400px;
+	left: 900px;
+	font-weight:bold;
+	color:#FFFFFF;
+	font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
+	font-size: 30px;
+	cursor: default;
+	display: none;
+	text-shadow:1px 1px 1px rgba(46,39,26,1);
+}
+
+table, td, th {    
+	text-align: left;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	padding: 15px;
+}
+
+td:hover {
+	color: #FFD700;
 }

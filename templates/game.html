@@ -23,7 +23,7 @@
   </head>
   
   <body>
-	
+	<img id="coin" width="0" height="0" src="{{ url_for('static', filename='resources/images/coin.png') }}">
 	<canvas id="background-canvas" class="background-canvas" width="1920" height="1080"></canvas>
 	<canvas id="player-canvas" class="player-canvas" width="1920" height="1080"></canvas>
 	<script type="text/javascript" src="{{ url_for('static', filename='resources/background.js') }}"></script>
@@ -33,6 +33,36 @@
 	<script type="text/javascript" src="{{ url_for('static', filename='resources/jquery-3.2.0.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='resources/playerjQuery.js') }}"></script>
 	-->
-  </body>
-  
+	<div class="game-over" id="game-over">GAME OVER
+	<table>
+		<tr>
+			<th>Score:</th>
+			<th id="scoreHTML">123</th>
+		</tr>
+		<tr>
+			<td onclick="restart()">Restart</td>
+		</tr>
+		<tr>
+			<td onclick="restart()">Upload</td>
+		</tr>
+		<tr>
+			<td onclick="menu()">Menu</td>
+		</tr>
+	</table>
+	</div>
+	
+	<div class="menu" id="menu">
+	<table>
+		<tr>
+			<td onclick="menuPlay()">Play</td>
+		</tr>
+		<tr>
+			<td onclick="github()">Github</td>
+		</tr>
+		<tr>
+			<td onclick="login()">Login</td>
+		</tr>
+	</table>
+	</div>
+  </body> 
 </html>
