@@ -11,9 +11,11 @@ The game is to be developed using the [Flask](http://flask.pocoo.org/) framework
 3. Background Canvas: Added background space animation.
 4. Player Canvas: The player can move on the canvas.
 5. Enemy Movement: Several enemies spawn and move on the canvas.
-6. Player Shoot & Collision Detection: The player can shoot and it hits the enemy a collision is detected - enemy "dies".
+6. Player Shoot & Collision Detection: The player can shoot and when it hits an enemy a collision is detected - enemy "dies".
 7. Documentation: Added documentation for overall project and commits 1-6.
 8. Documentation: Additional documentation for commits 1-6.
+9. Score, Enemy Shoot & Collision Detection: Score implemented, enemies can shoot and collision detected when they hit the player.
+10. Menus, Boss Fight, Endless Waves & Power Ups: Implemented main menu and death menu, a boss fight, endless waves and a score power up.
 
 ##### How to run:
 1. Have python, flask, flask-pymongo and bcrypt installed.
@@ -25,12 +27,15 @@ The game is to be developed using the [Flask](http://flask.pocoo.org/) framework
 - [x] Background Canvas
 - [x] Player & Enemy Movement
 - [x] Player can shoot & collision detection for enemies
-- [ ] Enemies can shoot & collision detection for player
+- [x] Enemies can shoot & collision detection for player
 - [ ] Classic mode
-- [ ] 2 Boss fights
+- [x] 2 Boss fights
 - [ ] Placeholder visuals replaced
-- [ ] Menu
-- [ ] Power ups
+- [ ] Audio
+- [x] Menu
+- [x] Power ups
+- [x] Score
+- [x] Endless Waves
 - [ ] Redis
 - [ ] MySQL
 - [ ] Customization
