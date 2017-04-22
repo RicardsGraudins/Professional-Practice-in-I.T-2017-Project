@@ -51,7 +51,7 @@ var stars = {};
 var howMany = 150;
 
 for (var s = 0; s < howMany; s++) {
-  stars[s] = new star(150, 790, 1, -2, 60, 50);
+  stars[s] = new star(150, canvas.height - 1, 1, -2, 60, 50);
 }//for
 
 

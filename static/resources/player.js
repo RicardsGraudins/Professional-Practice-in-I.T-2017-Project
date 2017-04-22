@@ -9,25 +9,55 @@ var percentFire = .01;
 var chance = 0;
 var bossPoints = 0;
 
+//assigning images in game.html to variables
 var img = document.getElementById("coin");
+var playerShip = document.getElementById("playerShip");
+var enemyShip = document.getElementById("enemyShip");
+var boss1 = document.getElementById("boss1");
+var boss2 = document.getElementById("boss2");
+var leviathanImage = document.getElementById("leviathan");
+var playerBulletImage = document.getElementById("playerBullet");
+var enemyBullet = document.getElementById("enemyBullet");
 
-function player (x, y, width, height, speed, hit){
+//assigning sounds to variables
+var audio = new Audio("static/resources/sounds/game music.mp3");
+var audio1 = new Audio("static/resources/sounds/died.mp3");
+var audio2 = new Audio("static/resources/sounds/coin.mp3");
+var audio3 = new Audio("static/resources/sounds/boss music.mp3");
+var audio4 = new Audio("static/resources/sounds/shoot.wav");
+var audio5 = new Audio("static/resources/sounds/boss entrance.wav");
+var audio6 = new Audio("static/resources/sounds/explosion.wav");
+
+//endless loop for game music and boss music
+audio.loop = true;
+audio3.loop = true;
+
+
+function player (x, y, width, height, speed, hit, image){
 	this.x =x;
 	this.y =y;
 	this.width = width;
 	this.height = height;
 	this.speed = speed;
 	this.hit = hit;
+	this.image = image;
 	
-	playerBullet = new bullet(0, 0, 10, 0);
+	playerBullet = new bullet(0, 0, 10, 0, playerBulletImage);
 	
 	this.draw = function(){
 		context.beginPath();
 		context.rect(this.x,this.y,this.width,this.height);
-		context.fillStyle = "DeepSkyBlue";
+		//context.fillStyle = "DeepSkyBlue";
+		context.fillStyle = "rgba(0, 0, 0, 0.01)";
 		context.fill();
 		context.closePath();
+		this.drawImage();
 	}//draw
+	
+	
+	this.drawImage = function(){
+		context.drawImage(this.image, this.x -5, this.y-4);
+	}//drawImage
 	
 	//if an arrow key is pressed: clear the canvas and depending on the button pressed modify player(x,y) and draw the object
 	//if the object tries to go beyond the boundaries set, set (x,y) to keep the object within the canvas
@@ -69,25 +99,33 @@ function player (x, y, width, height, speed, hit){
 			if (playerBullet.y < 0){
 				playerBullet.x = this.x + 10;
 				playerBullet.y = this.y + 5;
+				audio4.play();
 			}//inner if
 		}//if
 	}//move
 }//player
 
 //bullet object for player and enemy bosses
-function bullet(x,y,r,bulletFired){
+function bullet(x,y,r,bulletFired,image){
 	this.x = x;
 	this.y = y;
 	this.r = r;
 	this.bulletFired = bulletFired;
+	this.image = image;
 	
 	this.draw = function(){
 		context.beginPath();
 		context.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
-		context.fillStyle = "Cyan";
+		//context.fillStyle = "Cyan";
+		context.fillStyle = "rgba(0, 0, 0, 0.01)";
 		context.fill();
 		context.closePath();
+		this.drawImage();
 	}//draw
+	
+	this.drawImage = function(){
+		context.drawImage(this.image, this.x-1, this.y - 6);
+	}//drawImage
 	
 	//move upwards 15 pixels - used for playerBullet
 	this.move = function(){
@@ -138,7 +176,7 @@ function bullet(x,y,r,bulletFired){
 	}//hitAndBulletFired
 }//bullet
 
-playerObject = new player(900,900,20,20,10,0);
+playerObject = new player(900,900,30,30,10,0, playerShip);
 
 var leviX = 0;
 var wavesKilled = 0;
@@ -158,6 +196,12 @@ function init(){
 	
 	//if waves killed < 2 or > 2 spawn enemies mid,right and left
 	if (wavesKilled < 2 || wavesKilled > 2){
+		
+		//after the boss is defeated, pause boss music and play game music
+		if(wavesKilled == 3){
+			audio3.pause();
+			audio.play();
+		}//if
 	
 		//only execute these functions if the object has not been hit by the player's bullet
 		for (var i =0; i < 16; i++){
@@ -231,6 +275,10 @@ function init(){
 	
 	//if wavesKilled == 2 and bossPoints are < 3 spawn the bosses
 	if (wavesKilled == 2){
+		//pause game music and start playing boss music
+		audio.pause();
+		//audio5.play();
+		audio3.play();
 		if (bossPoints < 3){
 		//if b1 and b2 arent dead execute the bossCollision function
 		//after one of them is dead there is no need to determine if they collide with each other
@@ -384,6 +432,18 @@ function resetLeviathans(){
 	leviathanC.x = canvas.width - 300;
 	leviathanC.y = -150;
 	bossPoints = 0;
+	
+	lright = 200;
+	//reset leviathan bullets
+	for (i = 0; i < 8; i++){
+		leviA[i].x = lright;
+		leviB[i].x = lright;
+		leviC[i].x = lright;
+		leviA[i].y = 1000;
+		leviB[i].y = 1000;
+		leviC[i].y = 1000;
+		lright = lright + 50;
+	}//for
 }//resetLeviathans
 
 //reset enemies mid,right and left
@@ -501,10 +561,16 @@ function enemy(){
 	this.bulletSpawn = function(){
 		context.beginPath();
 		context.arc(this.bulletX, this.bulletY, 5, 0, 2 * Math.PI);
-		context.fillStyle = "DeepPink";
+		//context.fillStyle = "DeepPink";
+		context.fillStyle = "rgba(0, 0, 0, 0.01)";
 		context.fill();
 		context.closePath();
+		this.drawBulletImage();
 	}//bulletSpawn
+	
+	this.drawBulletImage = function(){
+		context.drawImage(this.bulletImage, this.bulletX-1, this.bulletY-6);
+	}//drawBulletImage
 	
 	this.checkCollision = function(){
 		//vertical and horizontal distance between the circle's center and the rectangle's center
@@ -519,6 +585,7 @@ function enemy(){
 			playerBullet.y = -500;
 			score = score + 100;
 			enemiesHit++;
+			audio6.play();
 		}//if
 	}//checkCollision
 	
@@ -559,7 +626,7 @@ function enemy(){
 }//enemy
 
 //enemies mid
-function mid(x, y, dx, dy, width, height, left, right, hit, bulletX, bulletY, bulletFired){
+function mid(x, y, dx, dy, width, height, left, right, hit, bulletX, bulletY, bulletFired, image, bulletImage){
 	this.x = x;
 	this.y = y;
 	this.dx = dx;
@@ -572,14 +639,22 @@ function mid(x, y, dx, dy, width, height, left, right, hit, bulletX, bulletY, bu
 	this.bulletX = bulletX;
 	this.bulletY = bulletY;
 	this.bulletFired = bulletFired;
+	this.image = image;
+	this.bulletImage = bulletImage;
 	
 	this.spawn = function(){
 		context.beginPath();
 		context.rect(this.x,this.y,this.width,this.height);
-		context.fillStyle = "yellow";
+		//context.fillStyle = "yellow";
+		context.fillStyle = "rgba(0, 0, 0, 0.01)";
 		context.fill();
 		context.closePath();
+		this.drawImage();
 	}//spawn
+	
+	this.drawImage = function(){
+		context.drawImage(this.image, this.x -2, this.y + 11);
+	}//drawImage
 	
 	this.move = function() {
 		this.spawn();
@@ -620,7 +695,7 @@ function mid(x, y, dx, dy, width, height, left, right, hit, bulletX, bulletY, bu
 }//mid
 
 //enemies on the left will continuously move to the right until they are off the canvas and then spawn a bit off the canvas on the left and move right until destroyed
-function left(x, y, dx, dy, width, height, hit, bulletX, bulletY, bulletFired){
+function left(x, y, dx, dy, width, height, hit, bulletX, bulletY, bulletFired, image, bulletImage){
 	this.x = x;
 	this.y = y;
 	this.dx = dx;
@@ -631,14 +706,22 @@ function left(x, y, dx, dy, width, height, hit, bulletX, bulletY, bulletFired){
 	this.bulletX = bulletX;
 	this.bulletY = bulletY;
 	this.bulletFired = bulletFired;
+	this.image = image;
+	this.bulletImage = bulletImage;
 	
 	this.spawn = function(){
 		context.beginPath();
 		context.rect(this.x,this.y,this.width,this.height);
-		context.fillStyle = "red";
+		//context.fillStyle = "red";
+		context.fillStyle = "rgba(0, 0, 0, 0.01)";
 		context.fill();
 		context.closePath();
+		this.drawImage();
 	}//spawn
+	
+	this.drawImage = function(){
+		context.drawImage(this.image, this.x - 2, this.y + 11);
+	}//drawImage
 	
 	this.move = function() {
 		this.spawn();
@@ -651,7 +734,7 @@ function left(x, y, dx, dy, width, height, hit, bulletX, bulletY, bulletFired){
 }//left
 
 //enemies on the right will continuously move to the left until they are off the canvas and then spawn a bit off the canvas on the right and move left until destroyed
-function right(x, y, dx, dy, r, hit, bulletX, bulletY, bulletFired){
+function right(x, y, dx, dy, r, hit, bulletX, bulletY, bulletFired, image, bulletImage){
 	this.x = x;
 	this.y = y;
 	this.dx = dx;
@@ -661,14 +744,22 @@ function right(x, y, dx, dy, r, hit, bulletX, bulletY, bulletFired){
 	this.bulletX = bulletX;
 	this.bulletY = bulletY;
 	this.bulletFired = bulletFired;
+	this.image = image;
+	this.bulletImage = bulletImage;
 	
 	this.spawn = function(){
 		context.beginPath();
 		context.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
-		context.fillStyle = "blue";
+		//context.fillStyle = "blue";
+		context.fillStyle = "rgba(0, 0, 0, 0.01)";
 		context.fill();
 		context.closePath();
+		this.drawImage();
 	}//spawn
+	
+	this.drawImage = function(){
+		context.drawImage(this.image, this.x -22, this.y-11);
+	}//drawImage
 	
 	this.move = function() {
 		this.spawn();
@@ -725,8 +816,8 @@ var rightMid = 500;
 var q = 8;
 
 for (var e = 0; e < howManyMid; e++){
-	enemiesMid[e] = new mid(xMid, -50, 2, 2, 40, 40, leftMid, rightMid, 0, -50, -50, 0);
-	enemiesMid[q] = new mid(xMid, 0, 2, 2, 40, 40, leftMid, rightMid, 0, -50, -50, 0);
+	enemiesMid[e] = new mid(xMid, -50, 2, 2, 40, 40, leftMid, rightMid, 0, -50, -50, 0, enemyShip, enemyBullet);
+	enemiesMid[q] = new mid(xMid, 0, -2, 2, 40, 40, leftMid, rightMid, 0, -50, -50, 0, enemyShip, enemyBullet);
 	xMid = xMid + 50;
 	leftMid = leftMid + 50;
 	rightMid = rightMid - 50;
@@ -738,7 +829,7 @@ enemiesLeft = {};
 xLeft = -400;
 
 for (var el = 0; el < 8; el++){
-enemiesLeft[el] = new left(xLeft, 250, 2, 2, 20, 20, 0, 0, 0, 0);
+enemiesLeft[el] = new left(xLeft, 250, 2, 2, 40, 40, 0, 0, 0, 0, enemyShip, enemyBullet);
 xLeft = xLeft + 50;
 }//for
 
@@ -747,12 +838,12 @@ enemiesRight = {}
 xRight = canvas.width + 400;
 
 for (var er = 0; er < 8; er++){
-enemiesRight[er] = new right(xRight, 350, 2, 20, 20, 0, 0, 0, 0);
+enemiesRight[er] = new right(xRight, 350, 2, 20, 20, 0, 0, 0, 0, enemyShip, enemyBullet);
 xRight = xRight - 50;
 }//for
 
 //object for boss b1 and b2
-function bossOne(x, y, r, dx, dy, mass, hp) {
+function bossOne(x, y, r, dx, dy, mass, hp, image) {
 	this.x = x;
 	this.y = y;
 	this.r = r;
@@ -760,13 +851,16 @@ function bossOne(x, y, r, dx, dy, mass, hp) {
 	this.dy = dy;
 	this.mass = mass;
 	this.hp = hp;
+	this.image = image;
 	
 	//draw the object
 	this.draw = function(){
 		context.beginPath();
 		context.arc (this.x, this.y, this.r, 0, Math.PI * 2, false);
-		context.fillStyle = color;
+		//context.fillStyle = color;
+		context.fillStyle = "rgba(0, 0, 0, 0.01)";
 		context.fill();
+		this.drawImage();
 		
 		//movement along x and y axis
 		this.x += this.dx;
@@ -782,6 +876,10 @@ function bossOne(x, y, r, dx, dy, mass, hp) {
 			this.dy = -this.dy;
 		}//if
 	}//draw
+	
+	this.drawImage = function(){
+		context.drawImage(this.image, this.x - 56, this.y - 89);
+	}//drawImage
 	
 	//change the radius
 	this.resize = function (radius){
@@ -833,12 +931,12 @@ function bossOne(x, y, r, dx, dy, mass, hp) {
 		context.fillStyle = "pink";
 		context.fill();
 	}//drawOutline
-}//ball
+}//bossOne
 	
 //var b1 = new bossOne(300, 300, 60, 4, -2, 10, 10);
 //var b2 = new bossOne(400, 400, 60, 2, -4, 10, 10);
-var b1 = new bossOne(300, 300, 60, 14, -2, 10, 10);
-var b2 = new bossOne(400, 400, 60, 12, -4, 10, 10);
+var b1 = new bossOne(300, 300, 60, 14, -2, 10, 10, boss1);
+var b2 = new bossOne(400, 400, 60, 12, -4, 10, 10, boss2);
 
 //reset b1 and b2
 function resetBossOne(){
@@ -901,7 +999,8 @@ function bossCollision(){
 	
 	//if distance <= b1 radius + b2 radius
 	if (distance <= b1.r + b2.r){
-		console.log('Collision Detected');
+		//console.log('Collision Detected');
+		audio5.play();
 		bossPoints = bossPoints +1;
 		//b1.resize(40);
 		//b2.resize(40); intersect b1 and b2 for spinning effect
@@ -944,7 +1043,7 @@ function bossCollision(){
 	
 
 //leviathan object - spawn these after b1 and b2 collide
-function leviathan(x, y, dx, dy, width, height, hit){
+function leviathan(x, y, dx, dy, width, height, hit, image){
 	this.x = x;
 	this.y = y;
 	this.dx = dx;
@@ -954,14 +1053,17 @@ function leviathan(x, y, dx, dy, width, height, hit){
 	this.left = left;
 	this.right = right;
 	this.hit = hit;
+	this.image = image;
 	
 	//draw the object
 	this.spawnLeviathan = function(){
 		context.beginPath();
 		context.rect(this.x,this.y,this.width,this.height);
-		context.fillStyle = "purple";
+		//context.fillStyle = "purple";
+		context.fillStyle = "rgba(0, 0, 0, 0.01)";
 		context.fill();
 		context.closePath();
+		this.drawImage();
 	}//spawnLeviathan
 	
 	//move function for leviathanA
@@ -973,6 +1075,10 @@ function leviathan(x, y, dx, dy, width, height, hit){
 			this.y += this.dy;
 		}//if
 	}//move
+	
+	this.drawImage = function(){
+		context.drawImage(this.image, this.x-7, this.y-260);
+	}//drawImage
 	
 	//move function for leviathanB
 	this.moveRight = function(){
@@ -1028,16 +1134,16 @@ function leviathan(x, y, dx, dy, width, height, hit){
 	}//leviathan
 
 //creating 3 leviathan objects
-leviathanA = new leviathan(800,-50,2,2,300,50,0, 10);
-leviathanB = new leviathan(0, -150,2,2,300,50, 0, 10);
-leviathanC = new leviathan(canvas.width - 300, -150,2,2,300,50, 0, 10);
+leviathanA = new leviathan(800,-50,2,2,300,50,0, leviathanImage);
+leviathanB = new leviathan(0, -150,2,2,300,50, 0, leviathanImage);
+leviathanC = new leviathan(canvas.width - 300, -150,2,2,300,50, 0, leviathanImage);
 
 //every leviathan fires 8 bullets each - creating 3 arrays and populating them with 8 bullet objects
 leviA = [];
 lright = 200;
 
 for (var i = 0; i < 8; i++){
-	leviA[i] = new bullet(lright, 1000, 5, 0);
+	leviA[i] = new bullet(lright, 1000, 5, 0, enemyBullet);
 	lright = lright + 50;
 }//for
 	
@@ -1045,7 +1151,7 @@ leviB = [];
 lright = 200;
 
 for (var i = 0; i < 8; i++){
-	leviB[i] = new bullet(lright, 1000, 5, 0);
+	leviB[i] = new bullet(lright, 1000, 5, 0, enemyBullet);
 	lright = lright + 50;
 }//for
 
@@ -1053,7 +1159,7 @@ leviC = [];
 lright = 200;
 
 for (var i = 0; i < 8; i++){
-	leviC[i] = new bullet(lright, 1000, 5, 0);
+	leviC[i] = new bullet(lright, 1000, 5, 0, enemyBullet);
 	lright = lright + 50;
 }//for
 
@@ -1067,7 +1173,7 @@ function powerUp(x,y,r,dx,dy,q,hit){
 	this.q = q;
 	this.hit = hit;
 
-	var color = 'rgba(0, 0, 0, 0.01)'; //transparent
+	var color = "rgba(0, 0, 0, 0.01)"; //transparent
 
 	//draw the object
 	this.draw = function(){
@@ -1101,6 +1207,7 @@ function powerUp(x,y,r,dx,dy,q,hit){
 		if ((distX <= (playerObject.width/2)) && (distY <= (playerObject.height/2))){
 			score = score += 2000;
 			this.hit = 1;
+			audio2.play();
 		}//if
 	
 		var ax = distX - playerObject.width /2;
@@ -1140,6 +1247,9 @@ gameOver = function(){
 	document.getElementById("game-over").style.display = "block";
 	document.getElementById("player-canvas").setAttribute("class", "fade");
 	passScore();
+	audio.pause();
+	audio1.play();
+	audio3.pause();
 }//gameOver
 
 //hide the game over menu, set player-canvas transparency back to normal, reset everything and start the init function
@@ -1155,6 +1265,10 @@ restart = function(){
 	score = 0;
 	wavesKilled = 0;
 	enemiesHit = 0;
+	audio.play();
+	audio1.pause();
+	audio1.currentTime = 0;
+	audio3.currentTime = 0;
 	init();
 }//restart
 
@@ -1163,6 +1277,9 @@ menu = function(){
 	document.getElementById("game-over").style.display = "none";
 	document.getElementById("player-canvas").style.display = "none";
 	document.getElementById("menu").style.display = "block";
+	audio.play();
+	audio1.pause();
+	audio1.currentTime = 0;
 }//menu
 
 //display the player-canvas, set player-canvas transparency to normal and hide the menu
@@ -1198,4 +1315,4 @@ login = function(){
 }//login
 
 window.setInterval(incrScore, 3000);
-init();
+audio.play();

@@ -18,12 +18,26 @@
 			padding: 0;
 			overflow: hidden;
 		}
+		
+		#block img {
+			display: block;
+		}
     </style>
 
   </head>
   
   <body>
-	<img id="coin" width="0" height="0" src="{{ url_for('static', filename='resources/images/coin.png') }}">
+	<!-- loading images inside a div with display: block; gets rid of the gap images create -->
+	<div id="block">
+		<img id="coin" width="0" height="0" src="{{ url_for('static', filename='resources/images/coin.png') }}">
+		<img id="boss1" width="0" height="0" src="{{ url_for('static', filename='resources/images/boss1.png') }}">
+		<img id="boss2" width="0" height="0" src="{{ url_for('static', filename='resources/images/boss2.png') }}">
+		<img id="playerBullet" width="0" height="0" src="{{ url_for('static', filename='resources/images/playerBullet.png') }}">
+		<img id="enemyBullet" width="0" height="0" src="{{ url_for('static', filename='resources/images/enemyBullet.png') }}">
+		<img id="playerShip" width="0" height="0" src="{{ url_for('static', filename='resources/images/player40px.png') }}">
+		<img id="leviathan" width="0" height="0" src="{{ url_for('static', filename='resources/images/leviathan.png') }}">
+		<img id="enemyShip" width="0" height="0" src="{{ url_for('static', filename='resources/images/enemyShip45px.png') }}">
+	</div>
 	<canvas id="background-canvas" class="background-canvas" width="1920" height="1080"></canvas>
 	<canvas id="player-canvas" class="player-canvas" width="1920" height="1080"></canvas>
 	<script type="text/javascript" src="{{ url_for('static', filename='resources/background.js') }}"></script>

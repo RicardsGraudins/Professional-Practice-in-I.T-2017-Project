@@ -148,7 +148,7 @@
 	font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
 	font-size: 30px;
 	cursor: default;
-	display: none;
+	display: block;
 	text-shadow:1px 1px 1px rgba(46,39,26,1);
 }
 
