@@ -25,6 +25,12 @@ The game is to be developed using the [Flask](http://flask.pocoo.org/) framework
 1. Have python, flask, flask-pymongo and bcrypt installed.
 2. CD to the project and either python runme.py or py runme.py depending on your version of python.
 
+##### How to play:
+Use the arrow keys to move across the canvas and spacebar to shoot.
+
+##### Important: Resolution
+The game is currently optimized for 1920 x 1080 resolution meaning any smaller resolution does not display the entire game. To get around this limitation use chrome, press f12 to access the developer tools and press the toggle device toolbar button which is the second top left icon to automatically scale down the canvas so the entire game is visible. The canvas size can further be altered by pulling on the edge of the toolbar or by using input fields at the top to change the size. The game hasn’t been tested on a resolution above 1920 x 1080.
+
 ##### Hosted on AWS:
 The game is currently hosted on an AWS EC2 Server at the following address http://52.26.150.224:5000/. Keep in mind that it is not the fastest server and takes a while to load and when it does load it may take some time to load in music, sprites etc. Steps taken to host on AWS:  
 1. Follow the AWS [guidelines](http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/connecting_to_windows_instance.html) to create and connect to the server.
@@ -126,5 +132,5 @@ Audio and Sprites
 Music and sound effects have been added to the game that are played using the new [HTML5 audio](https://www.w3schools.com/html/html5_audio.asp) tag and it gets the job done reasonably well for firefox, chrome and opera browsers. The .wav sound effects do not work on internet explorer as the .wav format is not supported. Placeholder sprites have been added to all the objects. The sprites are drawn inside the object hitbox (circles/rectangles) and the object hitbox have all been set to transparent to only display the sprite. Collision detection remains as it was between the object [hitboxes](https://gaming.stackexchange.com/questions/1239/what-is-a-hit-box) and not the images themselves, more complex hitboxes can be implemented however it is not necessary for this game.
 
 #### Commit 13
-Templates & Score
+Templates & Score  
 All templates have been modified to look more appealing. The game over menu now has a functioning upload button that takes the score achieved in the most recent game and overwrites the score stored in MongoDB for the logged in user. If the upload button is pressed while the user is not logged in, the login template is loaded. The high score template can be accessed if the user is logged in and it currently displays 3 things, the user's score, the highest score and the lowest score. The highest and lowest scores are currently displayed as cursor data and the template will be updated later to display only the top 10 scores. The game is also hosted on an AWS EC2 Server at the following address http://52.26.150.224:5000/ for more information look at the "Hosted on AWS" section on this README.
