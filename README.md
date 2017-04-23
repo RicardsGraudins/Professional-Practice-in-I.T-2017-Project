@@ -17,10 +17,31 @@ The game is to be developed using the [Flask](http://flask.pocoo.org/) framework
 9. Score, Enemy Shoot & Collision Detection: Score implemented, enemies can shoot and collision detected when they hit the player.
 10. Menus, Boss Fight, Endless Waves & Power Ups: Implemented main menu and death menu, a boss fight, endless waves and a score power up.
 11. Added Audio and Sprites: Added music, sound effects and sprites to every object.
+12. Documentation: Added documentation for commits 9-11.
+13. High Scores and Template Update: MongoDB now stores score and templates have been modified.
+14. Documentation: Added documentation for commit 13.
 
 ##### How to run:
 1. Have python, flask, flask-pymongo and bcrypt installed.
 2. CD to the project and either python runme.py or py runme.py depending on your version of python.
+
+##### Hosted on AWS:
+The game is currently hosted on an AWS EC2 Server at the following address http://52.26.150.224:5000/. Keep in mind that it is not the fastest server and takes a while to load and when it does load it may take some time to load in music, sprites etc. Steps taken to host on AWS:  
+1. Follow the AWS [guidelines](http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/connecting_to_windows_instance.html) to create and connect to the server.
+2. Make the server accessable remotely by enabling port 80 HTTP and port 443 HTTPS on the AWS website.
+3. Make sure all outbound traffic is set to 0.0.0.0/0 on the AWS website.
+4. Inside the AWS instance access windows firewall and enable ports 80 and 443.
+5. Install a version of python e.g. [Python 3.5.2](https://www.python.org/downloads/release/python-352/) and add to path.
+6. Inside the console type:
+> pip install flask   
+> pip install flask-pymongo   
+> pip install bcypt   
+7. Modify runme.py to run it on port 5000 
+> app.run(host='0.0.0.0', debug=True, port=5000) 
+8. Open port 5000 on the AWS website.
+9. Open port 5000 inbound and outbound on the instance.
+10. Using console CD to the project directory and run the application by typing
+> python runme.py 
 
 #### Project Tasklist
 - [x] Host locally on Flask
@@ -40,11 +61,11 @@ The game is to be developed using the [Flask](http://flask.pocoo.org/) framework
 - [ ] Redis
 - [ ] MySQL
 - [ ] Customization
-- [ ] Host on AWS EC2 Server
+- [x] Host on AWS EC2 Server
 
 #### Documentation
 #### Commits 1-6
-Flask - runme.py 
+Flask - runme.py  
 runme.py contains all the necessary code to run the application locally, mlab connection information, template routes and the code necessary to login/register with several features available for the logged in user.
 
 Registration takes place on the register template - if the method is POST, check for username in database, if the username does not exist then add the record to the database. The password is hashed using bcrypt for security and the hashpash value is stored on the database. If registration goes successfully then the user is logged in, a session is created and the user is redirected to profile. If the method is GET then return the register template to the user.
@@ -103,3 +124,7 @@ The main menu is accessed when the user accesses the game template page and then
 
 Audio and Sprites  
 Music and sound effects have been added to the game that are played using the new [HTML5 audio](https://www.w3schools.com/html/html5_audio.asp) tag and it gets the job done reasonably well for firefox, chrome and opera browsers. The .wav sound effects do not work on internet explorer as the .wav format is not supported. Placeholder sprites have been added to all the objects. The sprites are drawn inside the object hitbox (circles/rectangles) and the object hitbox have all been set to transparent to only display the sprite. Collision detection remains as it was between the object [hitboxes](https://gaming.stackexchange.com/questions/1239/what-is-a-hit-box) and not the images themselves, more complex hitboxes can be implemented however it is not necessary for this game.
+
+#### Commit 13
+Templates & Score
+All templates have been modified to look more appealing. The game over menu now has a functioning upload button that takes the score achieved in the most recent game and overwrites the score stored in MongoDB for the logged in user. If the upload button is pressed while the user is not logged in, the login template is loaded. The high score template can be accessed if the user is logged in and it currently displays 3 things, the user's score, the highest score and the lowest score. The highest and lowest scores are currently displayed as cursor data and the template will be updated later to display only the top 10 scores. The game is also hosted on an AWS EC2 Server at the following address http://52.26.150.224:5000/ for more information look at the "Hosted on AWS" section on this README.
