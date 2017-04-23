@@ -14,14 +14,6 @@ mongo = PyMongo(app)
 @app.route('/')
 def index():
 	return render_template('game.html')
-	
-@app.route('/localHighScore')
-def localHighScore():
-	return render_template('localHighScore.html')
-	
-@app.route('/highScore')
-def highScore():
-	return render_template('highScore.html')
 
 #Register, if the method is post - check for username in database, if username does not exist then add the record to the database
 #Password is hashed using bcrypt for security and the hashpass value is stored on the database instead of the password
@@ -85,7 +77,7 @@ def deleteAccount():
 	return redirect(url_for('profile'))
 	
 #ChangeEmail, if the user is logged in:
-#if the method is post - change email, otherwise method is get - return changeEmail.html
+#If the method is post - change email, otherwise method is get - return changeEmail.html
 @app.route('/changeEmail', methods=['POST', 'GET'])
 def changeEmail():
 	if 'username' in session:
@@ -97,6 +89,36 @@ def changeEmail():
 			flash('Email Changed!')
 		return render_template('changeEmail.html')
 	return render_template('login.html')
+	
+#UploadScore, if the user is not logged in redirect to profile
+#If the user is logged in and the method is post:
+#Take the score from game.html and save it as the new score
+@app.route('/uploadScore', methods=['GET','POST'])
+def uploadScore():
+	if 'username' in session:
+		if request.method == 'POST':
+			users = mongo.db.users
+			user = users.find_one({'name' : session['username']})
+			user['score'] = request.form['score']
+			users.save(user)
+		return redirect(url_for('profile'))
+	return redirect(url_for('profile'))
+	
+#HighScore, if the user is not logged in redirect to profile
+#If the user is logged in render template highScore.html
+#In highScore.html flash the user's high score and display the highest and lowest scores in a table
+@app.route('/highScore', methods=['GET','POST'])
+def highScore():
+	if 'username' in session:
+		users = mongo.db.users
+		userHighScore = users.find_one({'name' : session['username']}, {"_id":0, "score":1})
+		flash('Your high score is:')
+		#a = users.find().sort({score:-1}).limit(1)
+		#b = users.find().sort({score:+1}).limit(1)
+		a = users.find(sort=[("score", -1)]).limit(1)
+		b = users.find(sort=[("score", +1)]).limit(1)
+		return render_template('highScore.html', userHighScore = userHighScore, a = a, b = b)
+	return redirect(url_for('profile'))
 
 if __name__ == "__main__":
 	app.secret_key = 'mysecret'

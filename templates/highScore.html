@@ -11,12 +11,35 @@
 
 	<!-- Embedded CSS, overwrites external CSS -->
     <style type="text/css">
+		html, body {
+			background-color: black;
+		}
     </style>
 
   </head>
   
   <body>
-	<p>	High Score Page - MYSQL </p>
+  
+	<div class="highScoresTable">
+	<table>
+		<tr>
+			<td>{{a}}</td>
+		</tr>
+		<tr>
+			<td>{{b}}</td>
+		</tr>
+	</table>
+	</div>
+	
+	<p>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				{% for message in messages %}
+					<h3 class="highScoresUser"> {{ message }} {{ userHighScore }} </h3>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+	</p>
   </body>
   
 </html>

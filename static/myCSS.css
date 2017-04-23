@@ -168,3 +168,112 @@ th, td {
 td:hover {
 	color: #FFD700;
 }
+	
+#scoreHTML {
+	font-size: 30px;
+	border: none;
+	font-weight:bold;
+	color:#FFFFFF;
+	font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
+	font-size: 30px;
+	cursor: default;
+	text-shadow:1px 1px 1px rgba(46,39,26,1);
+	background-color: black;
+}
+
+#uploadButton {
+	font-size: 30px;
+	border: none;
+	font-weight:bold;
+	color:#FFFFFF;
+	font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
+	font-size: 30px;
+	cursor: default;
+	text-shadow:1px 1px 1px rgba(46,39,26,1);
+	background: none;
+}
+
+#uploadButton:hover {
+	color: #FFD700;
+}
+
+.link3 {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.link3:visited {
+	color: #ffffff;
+} 
+
+.link3:hover {
+	color: #f0a118;
+}
+
+.link4 {
+	color: #ffffff;
+}
+
+.link4:visited {
+	color: #ffffff;
+} 
+
+.link4:hover {
+	color: #f0a118;
+}
+
+.title{
+	color:#FFFFFF;
+	font-weight: bold;
+	font-size: 30px;
+	font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
+	text-align:left;
+	word-spacing:2pt;
+	text-shadow:1px 1px 1px rgba(46,39,26,1);
+}
+
+.content2 {
+	color:#FFFFFF;
+	font-weight: normal;
+	font-size: 100%;
+	font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
+	text-align:center;
+	word-spacing:2pt;
+	text-shadow:1px 1px 1px rgba(46,39,26,1);
+}
+
+.containerLogin {
+	padding-right:15px;
+	padding-left:15px;
+	margin-right:auto;
+	margin-left:auto;
+	margin-top: 17%;
+}
+
+/* HighScore Template*/
+.highScoresTable {
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	font-weight:bold;
+	color:#FFFFFF;
+	font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
+	font-size: 30px;
+	cursor: default;
+	text-shadow:1px 1px 1px rgba(46,39,26,1);
+}
+
+.highScoresUser {
+	color:#FFFFFF;
+	font-weight: bold;
+	font-size: 30px;
+	font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
+	text-shadow:1px 1px 1px rgba(46,39,26,1);
+	text-align:center;
+	word-spacing:2pt;
+	position: fixed;
+	bottom: 0;
+}

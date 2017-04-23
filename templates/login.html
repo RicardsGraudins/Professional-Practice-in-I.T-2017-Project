@@ -11,24 +11,26 @@
 
 	<!-- Embedded CSS, overwrites external CSS -->
     <style type="text/css">
+		html, body {
+			background-color: black;
+		}
     </style>
 
   </head>
   
   <body>
-	<p> Login Page </p>
-	
+  
 	<!-- Form groups for login -->
-	<div class="container">
+	<div class="containerLogin">
 		<div class="row">
 			<div class="col col-offset">
 				<form method=POST action="{{ url_for('login') }}">
 					<div class="form-group">
-						<label for="exampleInputEmail1"><span class="content">Username</span></label>
+						<label for="exampleInputEmail1"><span class="content2">Username</span></label>
 						<input type="text" class="form-control" name="username" placeholder="Username">
 					</div>
 					<div class="form-group">
-						<label for="exampleInputPassword1"><span class="content">Password</span></label>
+						<label for="exampleInputPassword1"><span class="content2">Password</span></label>
 						<input type="password" class="form-control" name="pass" placeholder="Password">
 					</div>
 					<button type="submit" class="button2">Log In</button>
@@ -39,11 +41,11 @@
 				{% with messages = get_flashed_messages() %}
 					{% if messages %}
 						{% for message in messages %}
-							<h3 class="content"> {{ message }} </h3>
+							<h3 class="content2"> {{ message }} </h3>
 						{% endfor %}
 					{% endif %}
 				{% endwith %}
-					<p class="content"> Don't have an account? <a class="link" href="{{ url_for('register') }}">Sign up here</a>. </p>
+					<p class="content2"> Don't have an account? <a class="link4" href="{{ url_for('register') }}">Sign up here</a>. </p>
 				</div>
 			</div>
 		</div>

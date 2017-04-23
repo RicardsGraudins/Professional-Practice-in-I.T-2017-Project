@@ -11,17 +11,20 @@
 
 	<!-- Embedded CSS, overwrites external CSS -->
     <style type="text/css">
+		html, body {
+			background-color: black;
+		}
     </style>
 
   </head>
   
   <body>
-	<div class="container">
+	<div class="containerLogin">
 		<div class="row">
 			<div class="col col-offset">
 				<form method=POST action="{{ url_for('changeEmail') }}">
 					<div class="form-group">
-						<label for="newEmailAddress"><span class="content">New Email:</span></label>
+						<label for="newEmailAddress"><span class="content2">New Email:</span></label>
 						<input type="text" class="form-control" name="newEmail" placeholder="newemail@gmail.com">
 					</div>
 					<button type="submit" class="button2">Change Email</button>
@@ -34,7 +37,7 @@
 							{% endfor %}
 						{% endif %}
 					{% endwith %}
-					<p class="content">Click <a class="link" href="{{ url_for('profile') }}">here</a> to return to profile. </p>
+					<p class="content2">Click <a class="link4" href="{{ url_for('profile') }}">here</a> to return to profile. </p>
 					</div>
 				</form>
 			</div>

@@ -1238,7 +1238,7 @@ function resetPlayerBullet(){
 
 //pass the score to html
 passScore = function(){
-	document.getElementById("scoreHTML").innerHTML = score;
+	document.getElementById("scoreHTML").value = score;
 }//passScore
 
 //stops init(), loads the game over menu and fades player-canvas
@@ -1301,18 +1301,6 @@ github = function(){
 		alert('Please allow popups for this website');
 	}
 }//github
-
-//open a new tab in the browser to the login template
-login = function(){
-	var win = window.open("127.0.0.1:5000/login", "_blank");
-	if (win) {
-		//browser has allowed it to be opened
-		win.focus();
-	} else {
-		//browser has blocked it
-		alert('Please allow popups for this website');
-	}
-}//login
 
 window.setInterval(incrScore, 3000);
 audio.play();

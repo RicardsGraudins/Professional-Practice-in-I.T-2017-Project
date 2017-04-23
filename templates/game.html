@@ -50,14 +50,16 @@
 	<div class="game-over" id="game-over">GAME OVER
 	<table>
 		<tr>
+			<form method=POST action="{{ url_for('uploadScore') }}">
 			<th>Score:</th>
-			<th id="scoreHTML">123</th>
+			<th><input id="scoreHTML" maxlength="10" name="score" type="text"></th>
 		</tr>
 		<tr>
 			<td onclick="restart()">Restart</td>
 		</tr>
 		<tr>
-			<td onclick="restart()">Upload</td>
+			<td><input type="submit" id="uploadButton" value="Upload"></input></td>
+			</form>
 		</tr>
 		<tr>
 			<td onclick="menu()">Menu</td>
@@ -74,7 +76,7 @@
 			<td onclick="github()">Github</td>
 		</tr>
 		<tr>
-			<td onclick="login()">Login</td>
+			<td><a class="link3" href="{{ url_for('profile') }}">Login</a></td>
 		</tr>
 	</table>
 	</div>
