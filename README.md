@@ -20,13 +20,15 @@ The game is to be developed using the [Flask](http://flask.pocoo.org/) framework
 12. Documentation: Added documentation for commits 9-11.
 13. High Scores and Template Update: MongoDB now stores score and templates have been modified.
 14. Documentation: Added documentation for commit 13.
+15. Added design plan: PDF containing additional documentation.
 
 ##### How to run:
 1. Have python, flask, flask-pymongo and bcrypt installed.
 2. CD to the project and either python runme.py or py runme.py depending on your version of python.
 
 ##### How to play:
-Use the arrow keys to move across the canvas and spacebar to shoot.
+Use the arrow keys to move across the canvas and spacebar to shoot.  
+Short project demo [here](https://www.youtube.com/watch?v=sX7RZ1r_LHw&feature=youtu.be).
 
 ##### Important: Resolution
 The game is currently optimized for 1920 x 1080 resolution meaning any smaller resolution does not display the entire game. To get around this limitation use chrome, press f12 to access the developer tools and press the toggle device toolbar button which is the second top left icon to automatically scale down the canvas so the entire game is visible. The canvas size can further be altered by pulling on the edge of the toolbar or by using input fields at the top to change the size. The game hasn’t been tested on a resolution above 1920 x 1080.
