@@ -5,7 +5,12 @@ This project revolves around the creation of my own variation of the arcade game
 ![Design Plan](https://github.com/RicardsGraudins/Professional-Practice-in-I.T-2017-Project/blob/master/Documentation/Design%20Graph.png)
 The game is to be developed using the [Flask](http://flask.pocoo.org/) framework to host the game locally and provide templates for user login, high scores, game modes and customization. User login information is stored using [MongoDB](http://searchdatamanagement.techtarget.com/definition/MongoDB) over at [mlab.com](https://mlab.com/) which is a cloud database service that hosts MongoDB databases. Successful user authentication allows access to the customization template which allows the user to modify certain parts of the game, primarily the player's spaceship. [Redis](https://redis.io/) is used to store player's high score and the user has the option of saving that high score which would be stored on a MYSQL database and then displayed on the high score template. Once the project is complete it will be hosted on an [AWS](https://aws.amazon.com/) EC2 Server which will allow users remote access to the game.
 
-##### Commit Summary:
+## Gameplay Demo:
+<p align="center">
+  <img width="600" height="339" src="https://github.com/RicardsGraudins/Professional-Practice-in-I.T-2017-Project/blob/master/Documentation/Galaxian.gif">
+</p>
+
+## Commit Summary:
 1. Flask Setup: Project runs on localhost.
 2. MongoDB Login: User can register/login, data stored on mlab.com
 3. Background Canvas: Added background space animation.
@@ -22,18 +27,18 @@ The game is to be developed using the [Flask](http://flask.pocoo.org/) framework
 14. Documentation: Added documentation for commit 13.
 15. Added design plan: PDF containing additional documentation.
 
-##### How to run:
+## How to run:
 1. Have python, flask, flask-pymongo and bcrypt installed.
 2. CD to the project and either python runme.py or py runme.py depending on your version of python.
 
-##### How to play:
+## How to play:
 Use the arrow keys to move across the canvas and spacebar to shoot.  
 Short project demo [here](https://www.youtube.com/watch?v=sX7RZ1r_LHw&feature=youtu.be).
 
-##### Important: Resolution
+## Important: Resolution
 The game is currently optimized for 1920 x 1080 resolution meaning any smaller resolution does not display the entire game. To get around this limitation use chrome, press f12 to access the developer tools and press the toggle device toolbar button which is the second top left icon to automatically scale down the canvas so the entire game is visible. The canvas size can further be altered by pulling on the edge of the toolbar or by using input fields at the top to change the size. The game hasn’t been tested on a resolution above 1920 x 1080.
 
-##### Hosted on AWS:
+## Hosted on AWS:
 The game is currently hosted on an AWS EC2 Server at the following address http://52.26.150.224:5000/. Keep in mind that it is not the fastest server and takes a while to load and when it does load it may take some time to load in music, sprites etc. Steps taken to host on AWS:  
 1. Follow the AWS [guidelines](http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/connecting_to_windows_instance.html) to create and connect to the server.
 2. Make the server accessable remotely by enabling port 80 HTTP and port 443 HTTPS on the AWS website.
@@ -51,7 +56,7 @@ The game is currently hosted on an AWS EC2 Server at the following address http:
 10. Using console CD to the project directory and run the application by typing
 > python runme.py 
 
-#### Project Tasklist
+## Project Tasklist
 - [x] Host locally on Flask
 - [x] MongoDB: User can register/login
 - [x] Background Canvas
@@ -71,7 +76,8 @@ The game is currently hosted on an AWS EC2 Server at the following address http:
 - [ ] Customization
 - [x] Host on AWS EC2 Server
 
-#### Documentation
+## Documentation
+Supplied documentation for each commit - one of the guidelines for this project.
 #### Commits 1-6
 Flask - runme.py  
 runme.py contains all the necessary code to run the application locally, mlab connection information, template routes and the code necessary to login/register with several features available for the logged in user.
